@@ -1,7 +1,7 @@
 import os, json
 import boto3
 from aws_lambda_powertools import Logger
-from langchain.llms.bedrock import Bedrock
+from langchain_community.chat_models import BedrockChat
 from langchain.memory.chat_message_histories import DynamoDBChatMessageHistory
 from langchain.memory import ConversationBufferMemory
 from langchain.embeddings import BedrockEmbeddings
@@ -38,7 +38,7 @@ def lambda_handler(event, context):
         model_id="amazon.titan-embed-text-v1",
         client=bedrock_runtime,
         region_name="us-east-1",
-    ), Bedrock(
+    ), BedrockChat(
         model_id="anthropic.claude-3-haiku-20240307-v1:0", client=bedrock_runtime, region_name="us-east-1"
     )
     faiss_index = FAISS.load_local("/tmp", embeddings, allow_dangerous_deserialization=True)
